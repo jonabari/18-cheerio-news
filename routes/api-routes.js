@@ -35,3 +35,19 @@ module.exports = app
 // .catch(function(err) {
 //   console.log(err);
 // })
+
+
+app.post('/saveArticle', (req, res) => {
+  db.create(req.body)
+  .then(function (savedArticle){
+   
+    if(savedArticle){
+    res.status(200);
+    }
+    if(!savedArticle){
+      console.log('ERROR: Could not post to db');
+    }
+  })
+})
+
+
