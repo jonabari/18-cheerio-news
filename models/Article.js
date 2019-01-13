@@ -15,13 +15,9 @@ var ArticleSchema = new Schema({
 		type: String,
 		default: 'Summary unavailable.'
 	},
-	saved: {
-		type: Boolean,
-		default: false
-	},
 	note: {
-		type: Schema.Types.ObjectId,
-		ref: "Note"
+		type: Object,
+		default: {}
 	}
 })
 
