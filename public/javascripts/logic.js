@@ -1,10 +1,27 @@
 // Finds and formats current time using custom moment.js endpoint
 const currentTime = moment().format('MMMM Do YYYY, h:mm a')
 
-// const renderPage = () => {
-//   switch
-//   case: 
-// }
+const postArticle = (data) => {
+  console.log(data)
+  // $.post('/saveArticle', {
+  //   title: $(this).attr('data-title'),
+  //   link: $(this).attr('data-link'),
+  //   summary: $(this).attr('data-summary'),
+  //   note: {}
+  // })
+}
+
+// Renders articles on page
+const renderArticles = (articles) => {
+  articles.forEach(a => {
+    let article = $('<div>')
+    article.append($(`<a href="${a.link}" target="_blank"><h3>${a.title}</h3></a>`))
+    article.append($(`<p>${a.summary}<p>`))
+    $('#news-container').append(article)
+    article.append($(`<button onclick="postArticle()" type="button" class="btn btn-success mb-3 save-btn">Save</button>`))
+    article.append($('<br><hr><br>'))
+  })
+}
 
 // Dynamically and contextually renders "scrape" and "clear" buttons
 const renderButtons = (timeStamp) => {
@@ -29,21 +46,12 @@ const renderButtons = (timeStamp) => {
 
 // Scrapes news articles and renders them on the page
 $(document).on('click', '#scrape-btn', () => {
+  $('#news-container').empty()
   $.get('/scrape')
     .then (scraped => {
-      scraped.forEach(a => {
-        let article = $('<div>')
-        article.append($(`<a href="${article.link}"><h3>${a.title}</h3></a>`))
-        article.append($(`<p>${a.summary}<p>`))
-        $('#news-container').append(article)
-        article.append($('<button type="button" class="btn btn-success mb-3" class="save-btn">Save</button>'))
-        article.append($('<br><hr><br>'))
-      })
-    let timeStamp = currentTime
-    sessionStorage.setItem('nytScrapeArticles', scraped)
-    sessionStorage.setItem('nytScrapeTimeStamp', timeStamp)
-    console.log(sessionStorage)
-    renderButtons(timeStamp)
+      renderArticles(scraped)
+      let timeStamp = currentTime
+      renderButtons(timeStamp)
     })
 })
 

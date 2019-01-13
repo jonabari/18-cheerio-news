@@ -2,7 +2,7 @@ const express = require('express')
 const cheerio = require('cheerio')
 const axios = require('axios')
 
-const db = require('../config/mongoConfig')
+const db = require('../models')
 
 const app = express.Router()
 
@@ -26,23 +26,13 @@ app.get('/scrape', (req, res) => {
     })
 })
 
-module.exports = app
-
-// db.Article.create(result)
-// .then(function(dbArticle) {
-//   console.log(dbArticle);
-// })
-// .catch(function(err) {
-//   console.log(err);
-// })
-
-
 app.post('/saveArticle', (req, res) => {
-  db.create(req.body)
+  console.log(req.body)
+  db.Article.create(req.body)
   .then(function (savedArticle){
-   
     if(savedArticle){
-    res.status(200);
+    res.status(200)
+    console.log('woo')
     }
     if(!savedArticle){
       console.log('ERROR: Could not post to db');
@@ -50,4 +40,4 @@ app.post('/saveArticle', (req, res) => {
   })
 })
 
-
+module.exports = app
