@@ -1,6 +1,6 @@
 var mongojs = require('mongojs');
 var databaseUrl = 'news-scrape';
-var collections = ['articles', 'notes'];
+var collections = ['articles'];
 
 var db = mongojs(databaseUrl, collections);
 db.on("error", function(error) {
