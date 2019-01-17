@@ -1,13 +1,3 @@
-// const postArticle = (data) => {
-//   console.log(data)
-//   // $.post('/saveArticle', {
-//   //   title: $(this).attr('data-title'),
-//   //   link: $(this).attr('data-link'),
-//   //   summary: $(this).attr('data-summary'),
-//   //   note: {}
-//   // })
-// }
-
 // Renders articles on page
 // NOTE: saveArticle function is triggered by onClick event in the html set by jQuery.
 const renderArticles = (articles) => {
@@ -46,8 +36,18 @@ const renderButtons = (timeStamp) => {
 
 // Saves individual article to MongoDB for future reference
 const saveArticle = (i) => {
-  let storedArticles = JSON.parse(sessionStorage.getItem('nytScrapeArticles'))
-  console.log(storedArticles[i])
+  let scrapedArticles = JSON.parse(sessionStorage.getItem('nytScrapeArticles'))
+  $.ajax({
+    method: 'POST',
+    url: '/saveArticle',
+    data: scrapedArticles[i]
+  }).then((data) => {
+    if (data) {
+      console.log('Successfuly logged:', data)
+    } else {
+      console.log('ERROR: Could not post to db')
+    }
+  })
 }
 
 // Scrapes news articles and renders them on the page
