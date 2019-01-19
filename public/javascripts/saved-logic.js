@@ -7,6 +7,7 @@ const renderMessagingContainer = () => {
   } else {
     $('#messaging-container').html(`
     <h1>Saved articles.</h1>
+    <button type="button" onclick="deleteAllArticles()" class="btn btn-warning mt-2 mb-4" id="clear-btn">Remove All Articles</button>
     `)
   }
 }
@@ -17,6 +18,35 @@ const getArticlesCollection = () => {
   .then (articles => {
     renderMessagingContainer()
     renderSavedArticles(articles)
+  })
+}
+
+// Removes all articles from the db
+const deleteAllArticles = () => {
+  $.ajax({
+    url: `/deleteAllArticles`,
+    type: 'DELETE',
+    success: function(removed) {
+      if (removed) {
+        Swal.fire({
+          type: 'success',
+          title: 'You got it!',
+          text: 'All articles have been removed!',
+          confirmButtonColor: '#5cb85c',
+        }).then(() => {
+          $('#news-container').empty()
+          getArticlesCollection()
+        })
+      } else {
+        console.log(err)
+        Swal.fire({
+          type: 'error',
+          title: 'Sorry!',
+          text: 'Could not remove all articles from database.',
+          confirmButtonColor: '#d9534f',
+        })
+      }
+    }  
   })
 }
 
@@ -41,7 +71,7 @@ const removeArticle = (id) => {
         Swal.fire({
           type: 'error',
           title: 'Sorry!',
-          text: '<h3>Could not remove article from database.</h3>',
+          text: 'Could not remove article from database.',
           confirmButtonColor: '#d9534f',
         })
       }

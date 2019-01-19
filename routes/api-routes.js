@@ -52,22 +52,22 @@ app.post('/saveArticle', (req, res) => {
 app.delete('/deleteArticle/:id', (req, res) =>{
   let id = req.params.id
   db.Article.remove({_id: id})
-  .then(function (deleted){
-    if(deleted){
-      res.send(deleted)
-    } else if(!deleted){
-    }
-  })
+    .then(function (deleted){
+      if(deleted){
+        res.send(deleted)
+      } else if(!deleted){
+      }
+    })
 })
 
 app.delete('/deleteAllArticles', (req, res) =>{
-  db.Article.remove({req})
-  .then(function (deleted){
-    if(deleted){
-      res.send(deleted)
-    } else if(!deleted){
-    }
-  })
+  db.Article.remove({})
+    .then(function (deleted){
+      if(deleted){
+        res.send(deleted)
+      } else if(!deleted){
+      }
+    })
 })
 
 
