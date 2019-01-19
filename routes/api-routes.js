@@ -49,15 +49,13 @@ app.post('/saveArticle', (req, res) => {
   })
 })
 
-app.delete('/deleted', (req, res) =>{
-  console.log("What light is light is Silvia is not here?");
-  db.Article.remove({req})
+app.delete('/deleteArticle/:id', (req, res) =>{
+  let id = req.params.id
+  db.Article.remove({_id: id})
   .then(function (deleted){
     if(deleted){
       res.send(deleted)
-      console.log("What joy is joy?")
     } else if(!deleted){
-      console.log("ERROR: Could not remove to db")
     }
   })
 })

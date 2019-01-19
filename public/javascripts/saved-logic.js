@@ -20,6 +20,39 @@ const getArticlesCollection = () => {
   })
 }
 
+// Removes one article from the database
+const removeArticle = (id) => {
+  $.ajax({
+    url: `deleteArticle/${id}`,
+    type: 'DELETE',
+    success: function(removed) {
+      if (removed) {
+        Swal.fire({
+          type: 'success',
+          title: 'You got it!',
+          text: 'The article has been removed.',
+          confirmButtonColor: '#5cb85c',
+        }).then(() => {
+          $('#news-container').empty()
+          getArticlesCollection()
+        })
+      } else {
+        console.log(err)
+        Swal.fire({
+          type: 'error',
+          title: 'Sorry!',
+          text: '<h3>Could not remove article from database.</h3>',
+          confirmButtonColor: '#d9534f',
+        })
+      }
+    }  
+  })
+}
+
+const addNote = () => {
+  console.log('its aliiiiive')
+}
+
 // Renders savedArticles on page
 const renderSavedArticles = (articles) => {
   articles.forEach(a => {
@@ -30,10 +63,10 @@ const renderSavedArticles = (articles) => {
     article.append($(`
       <div class="d-flex flex-row-reverse">
           <div class="col-xs-6 text-right">
-            <button onclick="addNote(${a._id})" type="button" class="btn btn-primary mb-2 ml-2 align-right">Add Note</button>
+            <button onclick="addNote('${a._id}')" type="button" class="btn btn-primary mb-2 ml-2 align-right">Add Note</button>
         </div>
           <div class="col-xs-6 text-right">
-            <button onclick="removeArticle(${a._id})" type="button" class="btn btn-danger mb-2 ml-2 align-right">Remove</button>
+            <button onclick="removeArticle('${a._id}')" type="button" class="btn btn-danger mb-2 ml-2 align-right">Remove</button>
           </div>
       </div>
     `))
@@ -42,29 +75,6 @@ const renderSavedArticles = (articles) => {
   })
   renderMessagingContainer()
 }
-
-// // Saves individual article to MongoDB for future reference
-// const saveArticle = (i) => {
-//   let scrapedArticles = JSON.parse(sessionStorage.getItem('nytScrapeArticles'))
-//   $.ajax({
-//     method: 'POST',
-//     url: '/saveArticle',
-//     data: scrapedArticles[i]
-//   }).then((data) => {
-//     if (data) {
-//       console.log('Successfuly saved:', data)
-//     } else {
-//       console.log('ERROR: Could not post to db')
-//     }
-//   })
-// }
-
-// // Clears page of scraped news articles
-// $(document).on('click', '#clear-btn', () => {
-//   $('#news-container').empty()
-//   sessionStorage.clear()
-//   renderButtons()
-// })
 
 $(document).ready(() => {
   getArticlesCollection()
