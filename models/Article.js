@@ -15,7 +15,7 @@ var ArticleSchema = new Schema({
 		type: String,
 		default: 'Summary unavailable.'
 	},
-	note: {
+	notes: {
 		type: Object,
 		default: {}
 	}

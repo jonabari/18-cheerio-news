@@ -70,5 +70,17 @@ app.delete('/deleteAllArticles', (req, res) =>{
     })
 })
 
+app.update('/updateNotes', (req,res) => {
+  let id = req.params.notes
+  db.Article.update({_id: notes})
+    .then(function (update){
+      if(update){
+        res.send(update)
+      } else if(!update){
+        console.log("mieeeeentes tan bieeeeeeen que me sabe a verdaaaad")
+      }
+    })
+})
+
 
 module.exports = app
