@@ -26,14 +26,12 @@ app.get('/scrape', (req, res) => {
     })
 })
 
-app.get('/articlesCollection', (req, res) => {
+app.get('/getArticlesCollection', (req, res) => {
   db.Article.find({})
   .then(function (articlesCollection){
     if (articlesCollection){
-      console.log("Are we humans?")
-      console.log(articlesCollection)
-    }
-    if(!savedArticles)
+      res.json(articlesCollection)
+    } else if(!articlesCollection)
     console.log("ERROR: cannot get from db")
   })
 })
@@ -45,8 +43,7 @@ app.post('/saveArticle', (req, res) => {
     if(savedArticle){
       res.send(savedArticle)
       console.log("I'm working!");
-    }
-    if(!savedArticle){
+    } else if(!savedArticle){
       console.log('ERROR: Could not post to db');
     }
   })

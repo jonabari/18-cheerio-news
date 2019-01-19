@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     {{!-- Bootstrap Styling --}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     {{!-- Application custom stylesheet --}}
     <link rel="stylesheet" href="../../public/stylesheets/style.css" type="text/css" />
     <title>News Scraper</title>
@@ -43,6 +44,9 @@
     {{!-- Moment js --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js"></script>
 
+    {{!-- Sweet Alert --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.all.js"></script>
+
     {{!-- Conditional front-end logic --}}
     <script>
         if (window.location.pathname == '/' ) {
@@ -53,7 +57,7 @@
         } else if (window.location.pathname == '/saved') {
             $('#scraped-nav-link').removeClass('active')
             $('#saved-nav-link').addClass('active')
-            $.getScript( '../../public/javascripts/save-logic.js')
+            $.getScript( '../../public/javascripts/saved-logic.js')
         }
     </script>
 </body>

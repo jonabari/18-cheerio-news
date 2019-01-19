@@ -3,12 +3,12 @@
 const renderArticles = (articles) => {
   let i = 0
   articles.forEach(a => {
-    let article = $('<div text-justify>')
+    let article = $('<div class="text-justify">')
+    article.append($('<hr><br>'))
     article.append($(`<a href="${a.link}" target="_blank"><h3>${a.title}</h3></a>`))
     article.append($(`<p>${a.summary}<p>`))
     $('#news-container').append(article)
-    article.append($(`<div class="text-right"><button onclick="saveArticle(${i})" type="button" class="btn btn-lg btn-success mb-2 mr-5 align-right">Save</button></div>`))
-    article.append($('<br><hr><br>'))
+    article.append($(`<div class="text-right"><button onclick="saveArticle(${i})" type="button" class="btn btn-lg btn-success mb-2 align-right">Save</button></div>`))
     i++
   })
 }
@@ -43,10 +43,21 @@ const saveArticle = (i) => {
     data: scrapedArticles[i]
   }).then((data) => {
     if (data) {
-      console.log('Successfuly saved:', data)
-    } else {
-      console.log('ERROR: Could not post to db')
-    }
+      Swal.fire({
+        type: 'success',
+        title: 'Great!',
+        text: 'The article has been saved.',
+        footer: '<p>You can view saved articles in the <a href="/saved" style="font-weight:bold">saved</a> tab</p>',
+        confirmButtonColor: '#5cb85c',
+      })    } else {
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+          footer: '<p>Could not post to the database.</p>',
+          confirmButtonColor: '#d9534f'
+        })    
+      }
   })
 }
 
