@@ -60,5 +60,15 @@ app.delete('/deleteArticle/:id', (req, res) =>{
   })
 })
 
+app.delete('/deleteAllArticles', (req, res) =>{
+  db.Article.remove({req})
+  .then(function (deleted){
+    if(deleted){
+      res.send(deleted)
+    } else if(!deleted){
+    }
+  })
+})
+
 
 module.exports = app
