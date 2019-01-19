@@ -43,7 +43,7 @@ const saveArticle = (i) => {
     data: scrapedArticles[i]
   }).then((data) => {
     if (data) {
-      console.log('Successfuly logged:', data)
+      console.log('Successfuly saved:', data)
     } else {
       console.log('ERROR: Could not post to db')
     }
@@ -53,6 +53,7 @@ const saveArticle = (i) => {
 // Scrapes news articles and renders them on the page
 $(document).on('click', '#scrape-btn', () => {
   $('#news-container').empty()
+  $('.loader').toggleClass('loader-on')
   $.get('/scrape')
     .then (scraped => {
       let timeStamp = moment().format('MMMM Do YYYY, h:mm a')
@@ -60,6 +61,7 @@ $(document).on('click', '#scrape-btn', () => {
       if (timeStamp) {
         sessionStorage.setItem('nytScrapeTimeStamp', timeStamp)
       }
+      $('.loader').toggleClass('loader-on')
       renderArticles(scraped)
       renderButtons(timeStamp)
     })
