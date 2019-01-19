@@ -31,8 +31,7 @@ app.post('/saveArticle', (req, res) => {
   db.Article.create(req.body)
   .then(function (savedArticle){
     if(savedArticle){
-    res.status(200)
-    console.log('woo')
+      res.send(savedArticle)
     }
     if(!savedArticle){
       console.log('ERROR: Could not post to db');
