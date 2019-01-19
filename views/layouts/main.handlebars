@@ -40,21 +40,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-    {{!-- Handles active link for nav-bar --}}
+    {{!-- Moment js --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js"></script>
+
+    {{!-- Conditional front-end logic --}}
     <script>
         if (window.location.pathname == '/' ) {
             $('#saved-nav-link').removeClass('active')
             $('#scraped-nav-link').addClass('active')
+            $.getScript( '../../public/javascripts/scrape-logic.js')
+
         } else if (window.location.pathname == '/saved') {
             $('#scraped-nav-link').removeClass('active')
             $('#saved-nav-link').addClass('active')
+            $.getScript( '../../public/javascripts/save-logic.js')
         }
     </script>
-    {{!-- Moment js --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js"></script>    {{!-- Front-end logic --}}
-    <script src="../../public/javascripts/scrape-logic.js"></script>
-    <script src="../../public/javascripts/saved-logic.js"></script>
-    
 </body>
 
 </html>
