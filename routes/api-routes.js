@@ -26,17 +26,31 @@ app.get('/scrape', (req, res) => {
     })
 })
 
+app.get('/articlesCollection', (req, res) => {
+  db.Article.find({})
+  .then(function (articlesCollection){
+    if (articlesCollection){
+      console.log("Are we humans?")
+      console.log(articlesCollection)
+    }
+    if(!savedArticles)
+    console.log("ERROR: cannot get from db")
+  })
+})
+
 app.post('/saveArticle', (req, res) => {
   console.log(req.body)
   db.Article.create(req.body)
   .then(function (savedArticle){
     if(savedArticle){
       res.send(savedArticle)
+      console.log("I'm working!");
     }
     if(!savedArticle){
       console.log('ERROR: Could not post to db');
     }
   })
 })
+
 
 module.exports = app
