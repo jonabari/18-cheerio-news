@@ -37,10 +37,13 @@ const renderButtons = (timeStamp) => {
 // Saves individual article to MongoDB for future reference
 const saveArticle = (i) => {
   let scrapedArticles = JSON.parse(sessionStorage.getItem('nytScrapeArticles'))
+  let articleToSave = scrapedArticles[i]
+  articleToSave.notes = []
+  console.log(articleToSave)
   $.ajax({
     method: 'POST',
     url: '/saveArticle',
-    data: scrapedArticles[i]
+    data: articleToSave
   }).then((data) => {
     if (data) {
       Swal.fire({
@@ -49,7 +52,8 @@ const saveArticle = (i) => {
         text: 'The article has been saved.',
         footer: '<p>You can view saved articles in the <a href="/saved" style="font-weight:bold">saved</a> tab</p>',
         confirmButtonColor: '#5cb85c',
-      })    } else {
+      })    
+    } else {
         Swal.fire({
           type: 'error',
           title: 'Oops...',

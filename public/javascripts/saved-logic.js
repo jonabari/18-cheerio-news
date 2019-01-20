@@ -26,13 +26,13 @@ const deleteAllArticles = () => {
   $.ajax({
     url: `/deleteAllArticles`,
     type: 'DELETE',
-    success: function(removed) {
+    success: removed => {
       if (removed) {
         Swal.fire({
-          type: 'success',
-          title: 'You got it!',
-          text: 'All articles have been removed!',
-          confirmButtonColor: '#5cb85c',
+          type: 'warning',
+          title: 'Alert!',
+          text: 'All articles have been removed from the db.',
+          confirmButtonColor: '#ffc107',
         }).then(() => {
           $('#news-container').empty()
           getArticlesCollection()
@@ -51,21 +51,14 @@ const deleteAllArticles = () => {
 }
 
 // Removes one article from the database
-const removeArticle = (id) => {
+const removeArticle = id => {
   $.ajax({
     url: `deleteArticle/${id}`,
     type: 'DELETE',
-    success: function(removed) {
+    success: removed => {
       if (removed) {
-        Swal.fire({
-          type: 'success',
-          title: 'You got it!',
-          text: 'The article has been removed.',
-          confirmButtonColor: '#5cb85c',
-        }).then(() => {
-          $('#news-container').empty()
-          getArticlesCollection()
-        })
+        $('#news-container').empty()
+        getArticlesCollection()
       } else {
         console.log(err)
         Swal.fire({
@@ -79,12 +72,51 @@ const removeArticle = (id) => {
   })
 }
 
-const addNote = () => {
-  console.log('its aliiiiive')
+const saveNote = (id) => {
+  $.get(`/getArticleById/${id}`)
+    .then (article => {
+      let notes = article[0].notes
+      let newNote = $('.new-note').val()
+      notes.push(newNote)
+      fetch(`/updateNotes/${id}`, {
+        method: 'put',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          'notes': notes,
+        })
+      }).then(viewNotes())
+
+    })
+}
+
+const viewNotes = id => {
+  $.get(`/getArticleById/${id}`)
+    .then (article => {
+      let notesDiv = $('<div>')
+      article[0].notes.forEach(n => {
+        notesDiv.append($('<hr><br>'))
+        notesDiv.append($(`<h6>${n}>/h6`))
+      })
+      notesDiv.append($(`
+      <form>
+        <div class="input-group m-2">
+          <input type="text" class="form-control new-note" placeholder="Type a new note.">
+          <div class="input-group-append" onclick="saveNote('${id}')">
+            <button class="btn btn-success" type="button">Save</button>
+          </div>
+        </div>     
+      </form>
+      `))
+      Swal.fire({
+        title: 'Notes',
+        text: article[0].title,
+        html: notesDiv
+      })
+    })    
 }
 
 // Renders savedArticles on page
-const renderSavedArticles = (articles) => {
+const renderSavedArticles = articles => {
   articles.forEach(a => {
     let article = $('<div class="text-justify">')
     article.append($('<hr><br>'))
@@ -93,7 +125,7 @@ const renderSavedArticles = (articles) => {
     article.append($(`
       <div class="d-flex flex-row-reverse">
           <div class="col-xs-6 text-right">
-            <button onclick="addNote('${a._id}')" type="button" class="btn btn-primary mb-2 ml-2 align-right">Add Note</button>
+            <button onclick="viewNotes('${a._id}')" type="button" class="btn btn-primary mb-2 ml-2 align-right">View Notes</button>
         </div>
           <div class="col-xs-6 text-right">
             <button onclick="removeArticle('${a._id}')" type="button" class="btn btn-danger mb-2 ml-2 align-right">Remove</button>

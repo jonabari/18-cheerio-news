@@ -17,7 +17,7 @@ var ArticleSchema = new Schema({
 	},
 	notes: {
 		type: Object,
-		default: {}
+		default: []
 	}
 })
 

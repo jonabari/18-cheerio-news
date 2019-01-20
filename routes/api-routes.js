@@ -28,7 +28,7 @@ app.get('/scrape', (req, res) => {
 
 app.get('/getArticlesCollection', (req, res) => {
   db.Article.find({})
-  .then(function (articlesCollection){
+  .then(articlesCollection => {
     if (articlesCollection){
       res.json(articlesCollection)
     } else if(!articlesCollection)
@@ -36,10 +36,21 @@ app.get('/getArticlesCollection', (req, res) => {
   })
 })
 
+app.get('/getArticleById/:id', (req, res) => {
+  let id = req.params.id
+  db.Article.find({_id: id})
+  .then(article => {
+    if (article){
+      res.json(article)
+    } else if(!article)
+    console.log("ERROR: cannot get from db")
+  })
+})
+
 app.post('/saveArticle', (req, res) => {
   console.log(req.body)
   db.Article.create(req.body)
-  .then(function (savedArticle){
+  .then(savedArticle => {
     if(savedArticle){
       res.send(savedArticle)
       console.log("I'm working!");
@@ -52,7 +63,7 @@ app.post('/saveArticle', (req, res) => {
 app.delete('/deleteArticle/:id', (req, res) =>{
   let id = req.params.id
   db.Article.remove({_id: id})
-    .then(function (deleted){
+    .then(deleted => {
       if(deleted){
         res.send(deleted)
       } else if(!deleted){
@@ -62,7 +73,7 @@ app.delete('/deleteArticle/:id', (req, res) =>{
 
 app.delete('/deleteAllArticles', (req, res) =>{
   db.Article.remove({})
-    .then(function (deleted){
+    .then(deleted => {
       if(deleted){
         res.send(deleted)
       } else if(!deleted){
@@ -70,14 +81,17 @@ app.delete('/deleteAllArticles', (req, res) =>{
     })
 })
 
-app.update('/updateNotes', (req,res) => {
-  let id = req.params.notes
-  db.Article.update({_id: notes})
-    .then(function (update){
+app.put('/updateNotes/:id', (req,res) => {
+  let id = req.params.id
+  console.log(req.body, id)
+  db.Article.updateOne(
+    {_id: ObjectId(id)},
+    req.body
+  ).then(update => {
       if(update){
         res.send(update)
       } else if(!update){
-        console.log("mieeeeentes tan bieeeeeeen que me sabe a verdaaaad")
+        console.log("Could not update article in db")
       }
     })
 })
