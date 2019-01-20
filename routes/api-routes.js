@@ -85,7 +85,7 @@ app.put('/updateNotes/:id', (req,res) => {
   let id = req.params.id
   console.log(req.body, id)
   db.Article.updateOne(
-    {_id: ObjectId(id)},
+    {_id: id},
     req.body
   ).then(update => {
       if(update){

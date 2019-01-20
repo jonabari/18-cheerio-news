@@ -84,7 +84,9 @@ const saveNote = (id) => {
         body: JSON.stringify({
           'notes': notes,
         })
-      }).then(viewNotes())
+      }).then(() => {
+        viewNotes()
+      })
 
     })
 }
@@ -94,8 +96,8 @@ const viewNotes = id => {
     .then (article => {
       let notesDiv = $('<div>')
       article[0].notes.forEach(n => {
-        notesDiv.append($('<hr><br>'))
-        notesDiv.append($(`<h6>${n}>/h6`))
+        notesDiv.append($('<hr>'))
+        notesDiv.append($(`<h6>${n}</h6>`))
       })
       notesDiv.append($(`
       <form>
