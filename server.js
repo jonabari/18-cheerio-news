@@ -23,8 +23,11 @@ app.use('/', htmlRouter)
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
-
-mongoose.connect('mongodb://localhost/nytScrape', { useNewUrlParser: true })
+if (process.env.MONGODB_URI) {
+  mongoose.connect(process.env.MONGODB_URI)
+} else {
+  mongoose.connect('mongodb://localhost/nytScrape', { useNewUrlParser: true })
+}
 
 let connection = mongoose.connection
 
