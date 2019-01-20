@@ -84,24 +84,43 @@ const saveNote = (id) => {
         body: JSON.stringify({
           'notes': notes,
         })
-      }).then(() => {
-        viewNotes()
       })
-
     })
+  location.reload()
 }
+
+const deleteNote = (id, i) => {
+  $.get(`/getArticleById/${id}`)
+    .then (article => {
+      let notes = article[0].notes
+      console.log(notes)
+      notes.splice(i, 1)
+      console.log(notes)
+      fetch(`/updateNotes/${id}`, {
+        method: 'put',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          'notes': notes,
+        })
+      })
+    })
+  location.reload()}
 
 const viewNotes = id => {
   $.get(`/getArticleById/${id}`)
     .then (article => {
       let notesDiv = $('<div>')
+      let i = 0
       article[0].notes.forEach(n => {
         notesDiv.append($('<hr>'))
-        notesDiv.append($(`<h6>${n}</h6>`))
+        notesDiv.append($(
+          `<h6>${n}&nbsp&nbsp<i onclick="deleteNote('${id}', '${i}')" class="fas fa-times" style="color:#d9534f"></i></h6>`
+        ))
+        i++
       })
       notesDiv.append($(`
       <form>
-        <div class="input-group m-2">
+        <div class="input-group mt-3 mb-2">
           <input type="text" class="form-control new-note" placeholder="Type a new note.">
           <div class="input-group-append" onclick="saveNote('${id}')">
             <button class="btn btn-success" type="button">Save</button>
